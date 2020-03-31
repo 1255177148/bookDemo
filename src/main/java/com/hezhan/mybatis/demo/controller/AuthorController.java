@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class AuthorController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private AuthorService authorService;
@@ -35,6 +38,7 @@ public class AuthorController {
             @ApiResponse(code = 500, message = "失败", response = String.class)})
     @GetMapping("/getAuthors")
     public String getAuthors(@RequestParam(value = "name", required = false) String name){
+        logger.debug("开始进入getAuthors方法------------------->");
         List<AuthorTO> authorTOS = authorService.getAuthorList();
         return JSON.toJSONString(authorTOS);
     }

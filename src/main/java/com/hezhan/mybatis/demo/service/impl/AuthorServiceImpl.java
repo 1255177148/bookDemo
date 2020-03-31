@@ -1,5 +1,6 @@
 package com.hezhan.mybatis.demo.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -9,9 +10,11 @@ import com.hezhan.mybatis.demo.entity.to.NovelAuthorTO;
 import com.hezhan.mybatis.demo.entity.vo.NovelAuthorVO;
 import com.hezhan.mybatis.demo.mapper.AuthorMapper;
 import com.hezhan.mybatis.demo.service.AuthorService;
+import com.hezhan.mybatis.demo.util.RedisUtil;
 import com.hezhan.mybatis.demo.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -31,10 +34,26 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
     private RestTemplateUtil restTemplateUtil;
 
     @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
     private AuthorMapper authorMapper;
+
+    @Value("${redis.key.prefix}")
+    private String keyPrefix;
 
     @Override
     public List<AuthorTO> getAuthorList() {
+        // 先从缓存中获取数据，若缓存中无数据，则再查数据库
+        String key = getAuthorListKey();
+        String value = redisUtil.get(key);
+        if (StringUtils.isNotBlank(value)){
+            return JSONArray.parseArray(value, AuthorTO.class);
+        }
+        /*
+          从这里开始，就是如果从上面的代码中拿不到缓存，
+          则从数据库中查询，然后封装完数据后写入到缓存中，并返回
+         */
         List<Author> authors = authorMapper.selectList(new QueryWrapper<>());
         if (CollectionUtils.isEmpty(authors)){
             return new ArrayList<>();
@@ -46,6 +65,9 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
             authorTO.setName(author.getName());
             authorTOS.add(authorTO);
         }
+        // 写入到缓存中
+        redisUtil.set(key, JSON.toJSONString(authorTOS));
+        // 返回结果
         return authorTOS;
     }
 
@@ -93,5 +115,15 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         }
         // 第一种方法 end
         return updateById(author);
+    }
+
+    /**
+     * 获取作者列表数据的缓存key
+     * @return
+     */
+    private String getAuthorListKey(){
+        StringBuffer key = new StringBuffer(keyPrefix);
+        key.append("author.list");
+        return key.toString();
     }
 }

@@ -39,6 +39,9 @@ spring:
 redis:
   default:
     timeout: 300
+  key:
+    # 为项目设置一个缓存key的前缀
+    prefix: bookDemo.server.
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
@@ -66,6 +69,6 @@ http:
 
 ### 指定日志配置文件
 log:
-  url: mybatisDemoLog/
+  url: bookDemo/
 server:
   port: 9090

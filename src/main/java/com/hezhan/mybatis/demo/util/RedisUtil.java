@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * redis操作工具类
+ */
 @Component
 @Transactional
 public class RedisUtil {
@@ -71,7 +74,7 @@ public class RedisUtil {
     }
 
     /**
-     * 保存单个数据到缓存中，并且不设置过期时间
+     * 保存单个数据到缓存中，设置默认时间，即从配置文件中获取的时间
      * @param key 缓存key
      * @param value 要保存的数据
      */
