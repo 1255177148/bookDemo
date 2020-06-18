@@ -53,6 +53,7 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("hezhan");
         gc.setOpen(false);
+        gc.setServiceName("%sService");//设置Service接口生成名称,这样生成接口前面就不会有 I
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
