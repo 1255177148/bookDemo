@@ -35,4 +35,9 @@ public interface AuthorService extends IService<Author> {
      * @return
      */
     boolean updateAuthor(Author author);
+
+    /**
+     * 测试mybatis plus的批量导入功能
+     */
+    void insertBatchAuthor();
 }

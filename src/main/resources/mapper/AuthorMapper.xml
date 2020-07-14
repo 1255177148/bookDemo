@@ -5,5 +5,12 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="code" property="code"/>
+        <result column="value" property="value"/>
     </resultMap>
+    <insert id="insertBatchAuthor">
+        insert into author(id,name,code,value) values
+        <foreach collection="authors" separator="," item="author">
+            (#{author.id}, #{author.name}, #{author.code}, #{author.value})
+        </foreach>
+    </insert>
 </mapper>

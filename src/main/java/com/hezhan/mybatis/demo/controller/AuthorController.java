@@ -70,4 +70,13 @@ public class AuthorController {
     public void updateAuthor(@RequestBody Author author){
         authorService.updateAuthor(author);
     }
+
+    @ApiOperation(value = "测试批量导入接口", notes = "测试批量导入接口")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "成功", response = String.class),
+            @ApiResponse(code = 500, message = "失败", response = String.class)})
+    @PostMapping("/test/insertBatch")
+    public void insertBatch(){
+        authorService.insertBatchAuthor();
+    }
 }

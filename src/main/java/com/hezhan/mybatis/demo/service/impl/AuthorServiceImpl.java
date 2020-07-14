@@ -47,7 +47,7 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         // 先从缓存中获取数据，若缓存中无数据，则再查数据库
         String key = getAuthorListKey();
         String value = redisUtil.get(key);
-        if (StringUtils.isNotBlank(value)){
+        if (StringUtils.isNotBlank(value)) {
             return JSONArray.parseArray(value, AuthorTO.class);
         }
         /*
@@ -55,11 +55,11 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
           则从数据库中查询，然后封装完数据后写入到缓存中，并返回
          */
         List<Author> authors = authorMapper.selectList(new QueryWrapper<>());
-        if (CollectionUtils.isEmpty(authors)){
+        if (CollectionUtils.isEmpty(authors)) {
             return new ArrayList<>();
         }
         List<AuthorTO> authorTOS = new ArrayList<>();
-        for (Author author : authors){
+        for (Author author : authors) {
             AuthorTO authorTO = new AuthorTO();
             authorTO.setCode(author.getCode());
             authorTO.setName(author.getName());
@@ -76,15 +76,15 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         String url = "http://127.0.0.1:8080/api/getNovelAuthor";
         String response = restTemplateUtil.get(url, String.class, null);
         List<NovelAuthorTO> novelAuthorTOS = JSONArray.parseArray(response, NovelAuthorTO.class);
-        if (CollectionUtils.isEmpty(novelAuthorTOS)){
+        if (CollectionUtils.isEmpty(novelAuthorTOS)) {
             return new ArrayList<>();
         }
         List<NovelAuthorVO> authorVOS = new ArrayList<>();
         List<Author> authors = authorMapper.selectList(new QueryWrapper<>());
-        for (NovelAuthorTO novelAuthorTO : novelAuthorTOS){
+        for (NovelAuthorTO novelAuthorTO : novelAuthorTOS) {
             NovelAuthorVO novelAuthorVO = new NovelAuthorVO();
-            for (Author author : authors){
-                if (novelAuthorTO.getAuthorCode().equalsIgnoreCase(author.getCode())){
+            for (Author author : authors) {
+                if (novelAuthorTO.getAuthorCode().equalsIgnoreCase(author.getCode())) {
                     novelAuthorVO.setAuthorName(author.getName());
                     break;
                 }
@@ -100,8 +100,8 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         author.setId(UUID.randomUUID().toString());
         author.setCode(author.getCode());
         author.setName(author.getName());
-        int result=authorMapper.insert(author);
-        if (result<0){
+        int result = authorMapper.insert(author);
+        if (result < 0) {
             return false;
         }
         return true;
@@ -110,18 +110,37 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
     @Override
     public boolean updateAuthor(Author author) {
         // 第一种全字段更新方法：在代码中将为null的字段附上空字符串的值，注意，null和""不是一个概念
-        if(StringUtils.isBlank(author.getName())){
+        if (StringUtils.isBlank(author.getName())) {
             author.setName("");
         }
         // 第一种方法 end
         return updateById(author);
     }
 
+    @Override
+    public void insertBatchAuthor() {
+        Author author = null;
+        List<Author> authorList = new ArrayList<>();
+        for (int i = 0; i < 20000; i++) {
+            author = new Author();
+            author.setId(UUID.randomUUID().toString());
+            author.setCode(String.valueOf(i));
+            author.setName(String.valueOf(i));
+            authorList.add(author);
+        }
+        long start = System.currentTimeMillis();
+        saveBatch(authorList, 5000);
+//        authorMapper.insertBatchAuthor(authorList);
+        long end = System.currentTimeMillis();
+        System.out.println("批量导入一共花费了" + (end - start) + "毫秒");
+    }
+
     /**
      * 获取作者列表数据的缓存key
+     *
      * @return
      */
-    private String getAuthorListKey(){
+    private String getAuthorListKey() {
         StringBuffer key = new StringBuffer(keyPrefix);
         key.append("author.list");
         return key.toString();
