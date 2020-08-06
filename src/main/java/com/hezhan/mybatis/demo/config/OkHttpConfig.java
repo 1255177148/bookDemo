@@ -32,10 +32,11 @@ public class OkHttpConfig {
 
     /**
      * 自定义OkHttp3 client配置
+     *
      * @return OkHttp3 client
      */
     @Bean
-    public OkHttpClient okHttpClient(){
+    public OkHttpClient okHttpClient() {
 //        Dispatcher dispatcher = new Dispatcher();
 //        dispatcher.setMaxRequests(100);// 设置最大请求数
 //        dispatcher.setMaxRequestsPerHost(100);// 设置单个ip最大请求数
@@ -50,10 +51,11 @@ public class OkHttpConfig {
 
     /**
      * 连接池配置-配置最大空闲连接数、长连接超时时间
+     *
      * @return 连接池
      */
     @Bean
-    public ConnectionPool pool(){
+    public ConnectionPool pool() {
         return new ConnectionPool(maxIdleConnections, keepAliveDuration, TimeUnit.MINUTES);
     }
 }

@@ -12,18 +12,21 @@ public interface AuthorService extends IService<Author> {
     /**
      * 从缓存中获取作者数据，
      * 若缓存中没有则调用数据库获取所有作者数据
+     *
      * @return
      */
     List<AuthorTO> getAuthorList();
 
     /**
      * 获取作者名称和小说名称关联数据
+     *
      * @return
      */
     List<NovelAuthorVO> getNovelAuthorTable();
 
     /**
      * 新增作者信息数据
+     *
      * @param author
      * @return
      */
@@ -31,6 +34,7 @@ public interface AuthorService extends IService<Author> {
 
     /**
      * 更新数据（全字段更新）
+     *
      * @param author
      * @return
      */

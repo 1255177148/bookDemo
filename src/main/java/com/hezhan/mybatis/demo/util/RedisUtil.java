@@ -29,6 +29,7 @@ public class RedisUtil {
 
     /**
      * 批量保存数据到缓存中，并且没有设置过期时间
+     *
      * @param cacheMap 要保存的缓存数据
      */
     public void mSet(Map<String, String> cacheMap) {
@@ -38,8 +39,9 @@ public class RedisUtil {
 
     /**
      * 批量保存数据到缓存中，且设置过期时间
+     *
      * @param cacheMap 要保存的缓存数据
-     * @param timeout 过期时间，以秒为单位
+     * @param timeout  过期时间，以秒为单位
      */
     public void mSet(Map<String, String> cacheMap, int timeout) {
         ValueOperations<String, String> ops = template.opsForValue();
@@ -51,6 +53,7 @@ public class RedisUtil {
 
     /**
      * 根据key获取对应的缓存数据
+     *
      * @param key 缓存key
      * @return
      */
@@ -61,7 +64,8 @@ public class RedisUtil {
 
     /**
      * 根据key获取对应的缓存数据，并返回指定的类型
-     * @param key 缓存key
+     *
+     * @param key   缓存key
      * @param clazz 指定的类型
      * @param <T>
      * @return
@@ -75,7 +79,8 @@ public class RedisUtil {
 
     /**
      * 保存单个数据到缓存中，设置默认时间，即从配置文件中获取的时间
-     * @param key 缓存key
+     *
+     * @param key   缓存key
      * @param value 要保存的数据
      */
     public void set(String key, String value) {
@@ -88,8 +93,9 @@ public class RedisUtil {
 
     /**
      * 保存单个数据到缓存中，设置过期时间
-     * @param key 缓存key
-     * @param value 要保存的数据
+     *
+     * @param key     缓存key
+     * @param value   要保存的数据
      * @param timeOut 过期时间，以秒为单位
      */
     public void set(String key, String value, int timeOut) {
@@ -102,17 +108,18 @@ public class RedisUtil {
 
     /**
      * 根据key从缓存中删除单个数据
+     *
      * @param key 缓存key
      * @return
      */
-    public boolean delete(String key){
+    public boolean delete(String key) {
         boolean deleteSuccess = true;
-        if (StringUtils.isEmpty(key)){
+        if (StringUtils.isEmpty(key)) {
             return true;
         }
         try {
             deleteSuccess = template.delete(key);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RemoteException("删除缓存key为" + key + "时出现错误，错误原因为：", e);
         }
         return deleteSuccess;
@@ -120,9 +127,10 @@ public class RedisUtil {
 
     /**
      * 根据传入的key的集合，批量删除缓存数据
+     *
      * @param keys key集合
      */
-    public void delete(List<String> keys){
+    public void delete(List<String> keys) {
         template.delete(keys);
     }
 }

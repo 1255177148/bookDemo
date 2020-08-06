@@ -37,7 +37,7 @@ public class AuthorController {
             @ApiResponse(code = 200, message = "成功", response = String.class),
             @ApiResponse(code = 500, message = "失败", response = String.class)})
     @GetMapping("/getAuthors")
-    public String getAuthors(@RequestParam(value = "name", required = false) String name){
+    public String getAuthors(@RequestParam(value = "name", required = false) String name) {
         logger.debug("开始进入getAuthors方法------------------->");
         List<AuthorTO> authorTOS = authorService.getAuthorList();
         return JSON.toJSONString(authorTOS);
@@ -48,7 +48,7 @@ public class AuthorController {
             @ApiResponse(code = 200, message = "成功", response = String.class),
             @ApiResponse(code = 500, message = "失败", response = String.class)})
     @GetMapping("/getNovelAuthorTable")
-    public String getTable(){
+    public String getTable() {
         List<NovelAuthorVO> authorVOS = authorService.getNovelAuthorTable();
         return JSON.toJSONString(authorVOS);
     }
@@ -58,7 +58,7 @@ public class AuthorController {
             @ApiResponse(code = 200, message = "成功", response = String.class),
             @ApiResponse(code = 500, message = "失败", response = String.class)})
     @PostMapping("/author")
-    public void insertAuthor(@RequestBody Author author){
+    public void insertAuthor(@RequestBody Author author) {
         authorService.insertAuthor(author);
     }
 
@@ -67,7 +67,7 @@ public class AuthorController {
             @ApiResponse(code = 200, message = "成功", response = String.class),
             @ApiResponse(code = 500, message = "失败", response = String.class)})
     @PutMapping("/author")
-    public void updateAuthor(@RequestBody Author author){
+    public void updateAuthor(@RequestBody Author author) {
         authorService.updateAuthor(author);
     }
 

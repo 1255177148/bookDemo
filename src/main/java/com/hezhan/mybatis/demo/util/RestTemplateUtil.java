@@ -31,8 +31,9 @@ public class RestTemplateUtil {
 
     /**
      * 有header参数的get请求
-     * @param url 请求路径
-     * @param headerParam header参数
+     *
+     * @param url          请求路径
+     * @param headerParam  header参数
      * @param uriVariables 可变参数
      * @return
      */
@@ -46,7 +47,7 @@ public class RestTemplateUtil {
         }
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         try {
-            if (CollectionUtils.isEmpty(uriVariables)){
+            if (CollectionUtils.isEmpty(uriVariables)) {
                 return restTemplate.exchange(url, HttpMethod.GET, httpEntity, clazz).getBody();
             } else {
                 return restTemplate.exchange(url, HttpMethod.GET, httpEntity, clazz, uriVariables).getBody();
@@ -58,15 +59,16 @@ public class RestTemplateUtil {
 
     /**
      * 不传header参数的get请求
-     * @param url 请求路径
-     * @param clazz 指定返回类型
+     *
+     * @param url          请求路径
+     * @param clazz        指定返回类型
      * @param uriVariables 可变参数
-     * @param <T> 返回类型
+     * @param <T>          返回类型
      * @return
      */
     public <T> T get(String url, Class<T> clazz, Map<String, Object> uriVariables) {
         try {
-            if (CollectionUtils.isEmpty(uriVariables)){
+            if (CollectionUtils.isEmpty(uriVariables)) {
                 return restTemplate.getForObject(url, clazz);
             } else {
                 return restTemplate.getForObject(url, clazz, uriVariables);
@@ -78,14 +80,15 @@ public class RestTemplateUtil {
 
     /**
      * 无返回值的put请求
-     * @param url 请求路径
+     *
+     * @param url         请求路径
      * @param headerParam 请求头
-     * @param bodyParam 封装的body参数
+     * @param bodyParam   封装的body参数
      */
-    public void put(String url, Map<String, String> headerParam, String bodyParam){
+    public void put(String url, Map<String, String> headerParam, String bodyParam) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        if (!CollectionUtils.isEmpty(headerParam)){
+        if (!CollectionUtils.isEmpty(headerParam)) {
             for (Map.Entry<String, String> entry : headerParam.entrySet()) {
                 headers.add(entry.getKey(), getValueEncode(entry.getValue()));
             }
@@ -100,7 +103,8 @@ public class RestTemplateUtil {
 
     /**
      * 无返回值的put请求
-     * @param url 请求路径
+     *
+     * @param url   请求路径
      * @param param 参数
      */
     public void put(String url, Map<String, Map<String, String>> param) {
@@ -123,10 +127,11 @@ public class RestTemplateUtil {
 
     /**
      * post请求
-     * @param url 请求路径
+     *
+     * @param url   请求路径
      * @param param 参数
-     * @param type 指定返回类型
-     * @param <T> 返回类型
+     * @param type  指定返回类型
+     * @param <T>   返回类型
      * @return
      */
     public <T> T post(String url, Map<String, Map<String, String>> param, Class<T> type) {
@@ -149,11 +154,12 @@ public class RestTemplateUtil {
 
     /**
      * post请求
-     * @param url 请求地址
+     *
+     * @param url         请求地址
      * @param headerParam header参数
-     * @param body body参数
-     * @param type 指定返回类型
-     * @param <T> 返回数据
+     * @param body        body参数
+     * @param type        指定返回类型
+     * @param <T>         返回数据
      * @return
      */
     public <T> T post(String url, Map<String, String> headerParam, String body, Class<T> type) {
@@ -174,7 +180,8 @@ public class RestTemplateUtil {
 
     /**
      * delete请求
-     * @param url 请求路径
+     *
+     * @param url         请求路径
      * @param headerParam header参数
      */
     public void delete(String url, Map<String, String> headerParam) {
@@ -194,14 +201,15 @@ public class RestTemplateUtil {
 
     /**
      * 带body参数的delete请求
-     * @param url 请求路径
+     *
+     * @param url         请求路径
      * @param headerParam 请求头
-     * @param bodyParam 封装的body参数
+     * @param bodyParam   封装的body参数
      */
-    public void delete(String url, Map<String, String> headerParam, String bodyParam){
+    public void delete(String url, Map<String, String> headerParam, String bodyParam) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        if (!CollectionUtils.isEmpty(headerParam)){
+        if (!CollectionUtils.isEmpty(headerParam)) {
             for (Map.Entry<String, String> entry : headerParam.entrySet()) {
                 headers.add(entry.getKey(), getValueEncode(entry.getValue()));
             }
@@ -216,17 +224,18 @@ public class RestTemplateUtil {
 
     /**
      * 由于OkHttp会对header参数进行校验，不支持中文，所以封装了一个转义方法
+     *
      * @param value 校验的header参数
      * @return
      */
-    private String getValueEncode(String value){
-        if (value == null){
+    private String getValueEncode(String value) {
+        if (value == null) {
             return "";
         }
         String newValue = value.replace("\n", "");
-        for (int i = 0,length = newValue.length();i < length;i++){
+        for (int i = 0, length = newValue.length(); i < length; i++) {
             char c = newValue.charAt(i);
-            if (c <= 31 && c != '\t' || c >= 127){
+            if (c <= 31 && c != '\t' || c >= 127) {
                 try {
                     return URLEncoder.encode(newValue, "UTF-8");
                 } catch (UnsupportedEncodingException e) {

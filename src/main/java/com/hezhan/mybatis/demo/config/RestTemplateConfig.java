@@ -31,19 +31,19 @@ public class RestTemplateConfig {
     OkHttpConfig okHttpConfig;
 
     @Bean
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate(httpRequestFactory());
         //发送请求时，为对象参数起作用的消息转换器
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         Iterator<HttpMessageConverter<?>> iterator = messageConverters.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             HttpMessageConverter<?> converter = iterator.next();
             //原有的String是ISO-8859-1编码，去掉
-            if (converter instanceof StringHttpMessageConverter){
+            if (converter instanceof StringHttpMessageConverter) {
                 iterator.remove();
             }
             //由于系统中默认有jackson 在转换json时自动会启用  但是我们不想使用它 可以直接移除
-            if (converter instanceof GsonHttpMessageConverter || converter instanceof MappingJackson2HttpMessageConverter){
+            if (converter instanceof GsonHttpMessageConverter || converter instanceof MappingJackson2HttpMessageConverter) {
                 iterator.remove();
             }
         }
@@ -67,10 +67,11 @@ public class RestTemplateConfig {
 
     /**
      * 底层使用OkHttp实现http通信
+     *
      * @return
      */
     @Bean
-    public ClientHttpRequestFactory httpRequestFactory(){
+    public ClientHttpRequestFactory httpRequestFactory() {
         return new OkHttp3ClientHttpRequestFactory(okHttpConfig.okHttpClient());
     }
 

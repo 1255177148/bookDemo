@@ -18,7 +18,7 @@ public class LettuceConfig implements LettuceClientConfigurationBuilderCustomize
     @Override
     public void customize(LettuceClientConfiguration.LettuceClientConfigurationBuilder clientConfigurationBuilder) {
         ClusterTopologyRefreshOptions clusterTopologyRefreshOptions = ClusterTopologyRefreshOptions.builder()
-               // 开启自适应刷新
+                // 开启自适应刷新
                 .enableAllAdaptiveRefreshTriggers()
                 .adaptiveRefreshTriggersTimeout(Duration.ofSeconds(10))
                 // 开启定时刷新，时间间隔根据实际情况修改
