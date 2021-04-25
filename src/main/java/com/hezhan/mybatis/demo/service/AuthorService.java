@@ -44,4 +44,12 @@ public interface AuthorService extends IService<Author> {
      * 测试mybatis plus的批量导入功能
      */
     void insertBatchAuthor();
+
+    /**
+     * 测试springboot事务注解的作用范围，如果此方法调用了另一个没加注解的方法，
+     * 而被调用的方法中也有sql语句，这两个方法里的sql语句会不会成为一个事务
+     * @param flag 当前方法异常启动标识，如果传1，则模拟异常
+     * @param status 方法里另外调用的另一个方法的方法异常启动标识
+     */
+    void testAffairs(int flag, int status);
 }

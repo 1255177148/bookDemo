@@ -16,8 +16,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -135,6 +137,22 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         System.out.println("批量导入一共花费了" + (end - start) + "毫秒");
     }
 
+    @Transactional
+    @Override
+    public void testAffairs(int flag, int status) {
+//        Author author = new Author();
+//        author.setName("测试1");
+//        author.setCode("测试1");
+//        BigDecimal bigDecimal = new BigDecimal("1.1");
+//        author.setValue(bigDecimal);
+//        authorMapper.insert(author);
+//        insertValue(status);
+        if (flag == 1){
+            throw new RuntimeException("模拟异常");
+        }
+        insertValue(status);
+    }
+
     /**
      * 获取作者列表数据的缓存key
      *
@@ -144,5 +162,20 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         StringBuffer key = new StringBuffer(keyPrefix);
         key.append("author.list");
         return key.toString();
+    }
+
+    /**
+     * 测试springboot事务注解的作用范围，作为另一个被调用的方法
+     */
+    public void insertValue(int status){
+        Author author = new Author();
+        author.setName("测试2");
+        author.setCode("测试2");
+        BigDecimal bigDecimal = new BigDecimal("2.2");
+        author.setValue(bigDecimal);
+        authorMapper.insert(author);
+        if (status == 1){
+            throw new RuntimeException("模拟异常2");
+        }
     }
 }

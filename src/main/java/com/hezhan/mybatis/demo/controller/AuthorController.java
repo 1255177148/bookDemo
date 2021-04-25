@@ -79,4 +79,10 @@ public class AuthorController {
     public void insertBatch(){
         authorService.insertBatchAuthor();
     }
+
+    @ApiOperation("测试springboot事务注解的作用范围")
+    @GetMapping("/test/affairs")
+    public void testAffairs(@RequestParam("flag") Integer flag, @RequestParam("status") Integer status){
+        authorService.testAffairs(flag, status);
+    }
 }
