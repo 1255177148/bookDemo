@@ -52,7 +52,7 @@ mybatis-plus:
     map-underscore-to-camel-case: false
   global-config:
     db-config:
-      id-type: uuid
+      id-type: auto
       # 第二种方法，在配置文件里设置update时的字段策略，这里选择ignored，即忽略检测null字段，即可进行全字段更新
 #      update-strategy: ignored
 
