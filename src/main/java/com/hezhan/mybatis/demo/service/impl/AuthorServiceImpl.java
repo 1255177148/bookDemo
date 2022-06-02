@@ -100,7 +100,7 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
     @Override
     public boolean insertAuthor(Author author) {
         Author author1 = authorMapper.selectById(1);
-        String id = author1.getId();
+        int id = author1.getId();
         System.out.println("id=" + id);
         author.setCode(author.getCode());
         author.setName(author.getName());
@@ -128,8 +128,7 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         List<Author> authorList = new ArrayList<>();
         for (int i = 0; i < 20000; i++) {
             author = new Author();
-            author.setId(UUID.randomUUID().toString());
-            author.setCode(String.valueOf(i));
+            author.setCode(UUID.randomUUID().toString());
             author.setName(String.valueOf(i));
             authorList.add(author);
         }
