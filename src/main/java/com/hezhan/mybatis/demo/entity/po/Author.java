@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @TableName("author")
 public class Author extends Model<Author> {
     @TableId
-    private Integer id;
+    private String id;
     private String code;
     private String name;
     private BigDecimal value;

@@ -22,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -99,7 +100,7 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
     @Override
     public boolean insertAuthor(Author author) {
         Author author1 = authorMapper.selectById(1);
-        int id = author1.getId();
+        String id = author1.getId();
         System.out.println("id=" + id);
         author.setCode(author.getCode());
         author.setName(author.getName());
@@ -127,6 +128,7 @@ public class AuthorServiceImpl extends ServiceImpl<AuthorMapper, Author> impleme
         List<Author> authorList = new ArrayList<>();
         for (int i = 0; i < 20000; i++) {
             author = new Author();
+            author.setId(UUID.randomUUID().toString());
             author.setCode(String.valueOf(i));
             author.setName(String.valueOf(i));
             authorList.add(author);
